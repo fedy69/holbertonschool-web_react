@@ -18,4 +18,5 @@ const updateCounter = (() => {
 })();
 
 $('button').on('click', _.debounce(updateCounter, 500));
+
 updateCounter();
