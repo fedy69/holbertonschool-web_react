@@ -36,22 +36,27 @@ const student2: Student = {
   location: "Sweden",
 };
 
-const studentsList: Student[] = [student1, student2];
+interface StudentClassConstructor {
+  firstName: string;
+  lastName: string;
+}
 
-const table = document.createElement("table");
-// Create the header row with "Name" and "City" columns
-const headerRow = table.insertRow();
-const headerCell1 = headerRow.insertCell();
-headerCell1.innerHTML = "<b>First Name</b>";
-const headerCell2 = headerRow.insertCell();
-headerCell2.innerHTML = "<b>Location</b>";
-// Loop over each student and create a row with name and city cells
-studentsList.forEach((student) => {
-  const row = table.insertRow();
-  const cell1 = row.insertCell();
-  cell1.innerHTML = student.firstName;
-  const cell2 = row.insertCell();
-  cell2.innerHTML = student.location;
-});
+interface StudentClassInterface {
+  workOnHomework(): string;
+  displayName(): string;
+}
+
+class StudentClass implements StudentClassInterface {
+  constructor(public firstName: string, public lastName: string) {}
+
+  workOnHomework(): string {
+    return "Currently working";
+  }
+
+  displayName(): string {
+    return this.firstName;
+  }
+}
+
 
 document.body.appendChild(table);
