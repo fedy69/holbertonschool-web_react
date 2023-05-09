@@ -59,4 +59,4 @@ class StudentClass implements StudentClassInterface {
 }
 
 
-document.body.appendChild(table);
+
