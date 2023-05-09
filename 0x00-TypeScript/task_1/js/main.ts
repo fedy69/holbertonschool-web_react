@@ -10,6 +10,11 @@ interface Teacher {
   [propName: string]: any;
 }
 
+interface Directors extends Teacher {
+  numberOfReports: number;
+}
+
+
 interface Student {
   firstName: string;
   lastName: string;
