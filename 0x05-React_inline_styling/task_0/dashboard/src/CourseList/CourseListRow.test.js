@@ -1,6 +1,6 @@
-import { shallow } from "enzyme";
-import React from "react";
-import CourseListRow from "./CourseListRow";
+import React from 'react';
+import { shallow } from 'enzyme';
+import CourseListRow from './CourseListRow';
 
 describe('<CourseListRow />', () => {
   it('renders without crashing', () => {

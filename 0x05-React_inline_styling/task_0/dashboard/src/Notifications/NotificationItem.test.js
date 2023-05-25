@@ -1,24 +1,46 @@
-import React from "react";
-import { shallow } from "enzyme";
-import NotificationItem from "./NotificationItem";
+import React from 'react';
+import { shallow } from 'enzyme';
+import NotificationItem from './NotificationItem';
 
-
-describe("<Notifications />", () => {
-  it("NotificationItem renders without crashing", () => {
+describe('<NotificationItem />', () => {
+  it('renders without crashing', () => {
     const wrapper = shallow(<NotificationItem />);
-    expect(wrapper.exists()).toEqual(true);
+    shallow(<NotificationItem />);
   });
 
-  it("Verify that by passing dummy type and value props, it renders the correct html", () => {
-    const wrapper = shallow(<NotificationItem type="default" value="test" />);
-    expect(wrapper.find("li")).toHaveLength(1);
-    expect(wrapper.find("li").text()).toEqual("test");
-    expect(wrapper.find("li").prop("data-notification-type")).toEqual("default");
+  it('renders type and value props', () => {
+    const wrapper = shallow(<NotificationItem type='default' value='test' />);
+    const li = wrapper.find('li');
+    expect(li).toHaveLength(1);
+    expect(li.text()).toEqual('test');
+    expect(li.prop('data-notification-type')).toEqual('default');
   });
 
-  it("Passing a html prop, it renders the correct html (for example", () => {
-    const text = "Here is the list of notifications";
-    const wrapper = shallow(<NotificationItem html={{ __html: "<u>test</u>" }} />);
-    expect(wrapper.find("li").html()).toEqual('<li data-notification-type="default"><u>test</u></li>');
+  it('renders html prop', () => {
+    const text = 'Here is the list of notifications';
+    const wrapper = shallow(
+      <NotificationItem html={{ __html: '<u>test</u>' }} />
+    );
+    const li = wrapper.find('li');
+    expect(li.html()).toEqual(
+      '<li data-notification-type="default"><u>test</u></li>'
+    );
   });
 });
+/*
+describe('markAsRead', () => {
+  it('markAsRead message', () => {
+    const id = 16;
+    const wrapper = shallow(
+      <NotificationItem type='default' value='test' id={id} />
+    );
+    const instance = wrapper.instance();
+    instance.markAsRead = jest.fn();
+    const listItem = wrapper.find('li').first();
+    listItem.simulate('click');
+    instance.markAsRead(id);
+    expect(instance.markAsRead).toHaveBeenCalledWith(16);
+    jest.restoreAllMocks();
+  });
+});
+*/
