@@ -8,7 +8,7 @@ export default function CourseList (props) {
   const listCourses = props.listCourses;
   if (!listCourses.length) {
     return (
-      <table id={css(styles.style)}>
+      <table id='CourseList' className={css(styles.style)}>
         <thead>
           <CourseListRow textFirstCell='Available courses' isHeader='true' />
         </thead>
@@ -23,8 +23,8 @@ export default function CourseList (props) {
   }
   else {
     return (
-      <table id='CourseList'>
-        <thead className={css(styles.textAligning)}>
+      <table id='CourseList' className={css(styles.style)}>
+        <thead >
           <CourseListRow textFirstCell='Available courses' isHeader='true' />
         </thead>
         <thead className={css(styles.textAligning)}>

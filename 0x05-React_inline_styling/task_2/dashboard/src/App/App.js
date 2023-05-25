@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     fontFamily: 'sans-serif',
     color: '#e0454b',
   },
+
   bodyStyle: {
     borderTop: 'solid',
     borderBottom: 'solid',
