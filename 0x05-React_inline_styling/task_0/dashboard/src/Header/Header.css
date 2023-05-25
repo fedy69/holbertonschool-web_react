@@ -1,16 +1,13 @@
-.header {
-  display: flex;
-  color: #e0344a;
-  align-items: center;
-  border-bottom: thick solid #e0344a;
-  width: 100%;
-  position: fixed;
+.App-header {
+display: flex;
+flex-direction: row;
+justify-content: left;
+height: 200px;
+
 }
 
-.header img {
-  width: 144px;
-}
-
-.header h1 {
-  margin: 0;
+.App-header h1 {
+margin: auto auto auto 0;
+font-weight: bold;
+color: var(--hred);
 }

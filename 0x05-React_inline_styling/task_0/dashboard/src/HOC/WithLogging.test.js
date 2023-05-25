@@ -1,55 +1,42 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import WithLogging from './WithLogging';
-import Login from '../Login/Login';
+import chai, { expect } from 'chai';
+import Adapter from 'enzyme-adapter-react-16';
+import { configure, mount } from 'enzyme';
+import WithLogging from './WithLogging.js';
+import sinonChai from 'sinon-chai';
+import { spy } from 'sinon';
+import Login from '../Login/Login.js';
 
-describe('<WithLogging />', () => {
-  it('render', () => {
-    console.log = jest.fn();
-    const HOC = WithLogging(() => <p />);
-    const wrapper = shallow(<HOC />);
-    expect(wrapper.exists());
-  });
-  /*
-  it('on mount and on unmount with pure html', () => {
-    console.log = jest.fn();
-    const HOC = WithLogging(() => <p />);
-    const wrapper = mount(<HOC />);
-    expect(wrapper.exists()).toEqual(true);
-    expect(console.log).toHaveBeenNthCalledWith(
-      1,
-      `Component Component is mounted`
-    );
-    wrapper.unmount();
-    expect(console.log).toHaveBeenNthCalledWith(
-      2,
-      `Component Component is going to unmount`
-    );
-    jest.restoreAllMocks();
-  });
-*/
-  it('render login', () => {
-    console.log = jest.fn();
-    const HOC = WithLogging(Login);
-    const wrapper = shallow(<HOC />);
-    expect(wrapper.exists());
-  });
-  /*
-  it('mount and on unmount with login. ', () => {
-    console.log = jest.fn();
-    const HOC = WithLogging(Login);
-    const wrapper = mount(<HOC />);
-    expect(wrapper.exists()).toEqual(true);
-    expect(console.log).toHaveBeenNthCalledWith(
-      1,
-      `Component Login is mounted`
-    );
-    wrapper.unmount();
-    expect(console.log).toHaveBeenNthCalledWith(
-      2,
-      `Component Login is going to unmount`
-    );
-    jest.restoreAllMocks();
-  });
-*/
+chai.use(sinonChai);
+let logs = spy(console, 'log');
+
+configure({
+	adapter: new Adapter()
+});
+
+
+describe("Test WithLogging.js", () => {
+
+	it("console.log was called on mount and on unmount with Component when the wrapped element is pure html", () => {
+		let wrapper = mount(
+			<WithLogging>
+				<p>simple phrase</p>
+			</WithLogging>
+		);
+		expect(logs).to.have.been.calledWith('Component Component is mounted');
+		wrapper.unmount();
+		expect(logs).to.have.been.calledWith('Component Component is going to unmount');
+	});
+
+	it("Renders the correct children with <Login /> Component as a child", () => {
+		let wrapper = mount(
+			<WithLogging>
+				<Login />
+			</WithLogging>
+      );
+		expect(logs).to.have.been.calledWith('Component Login is mounted');
+		wrapper.unmount();
+		expect(logs).to.have.been.calledWith('Component Login is going to unmount');
+	});
+
 });
