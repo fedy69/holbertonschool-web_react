@@ -1,55 +1,65 @@
-import React from 'react'
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite';
 
-class NotificationItem extends React.Component {
-  constructor(props) {
-    super(props)
-    this.html = props.html;
-    this.type = props.type;
-    this.value = props.value;
-    this.markAsRead = props.markAsRead;
-    this.iD = props.iD
-  }
-  render() {
-    return this.html ? (
-      <li dangerouslySetInnerHTML={{__html: this.html.__html}} data={this.type} className={this.type === 'default' ? css(styles.defaultData) : css(styles.urgentData) }></li>
-    ) : (
-      <li
-        className={this.type === 'default' ? css(styles.defaultData) : css(styles.urgentData)}
-        data={this.type}
-        onClick={() => {
-          this.markAsRead(this.iD);
-        }}
-      >
-        {this.value}
-      </li>
-    );
-  }
-      
-}
+class NotificationItem extends PureComponent {
+	render() {
+		let {
+			id,
+			type,
+			value,
+			html,
+			markAsRead
+		} = this.props;
 
-NotificationItem.propTypes = {
-  iD: PropTypes.number,
-  type: PropTypes.string,
-  html: PropTypes.shape({ __html: PropTypes.string }),
-  value: PropTypes.string,
-  markAsRead: PropTypes.func,
-};
+		let liStyle = (type === 'urgent') ? styles.urgentNotif : styles.defaultNotif;
 
-NotificationItem.defaultProps = {
-  type: 'default',
-  value: '',
-  markAsRead: () => {},
+		return (
+			<Fragment>
+				{
+					html !== undefined &&
+					<li
+						className={css(liStyle)}
+						onClick={() => markAsRead(id)}
+						data-priority-type={type}
+						dangerouslySetInnerHTML={html}
+					/>
+				}
+				{
+					html === undefined &&
+					<li
+						className={css(liStyle)}
+						onClick={() => markAsRead(id)}
+						data-priority-type={type}
+					>
+						{value}
+					</li>
+				}
+			</Fragment>
+		);
+	};
 };
 
 const styles = StyleSheet.create({
-  defaultData: {
-    color: 'blue'
-  },
-  urgentData: {
-    color: 'red'
-  }
-})
+	defaultNotif: {
+		color: 'blue',
+	},
+	urgentNotif: {
+		color: 'red',
+	},
+});
 
-export default NotificationItem
+NotificationItem.propTypes = {
+	html: PropTypes.shape({
+		__html: PropTypes.string,
+	}),
+	type: PropTypes.string.isRequired,
+	value: PropTypes.string,
+	markAsRead: PropTypes.func,
+};
+
+NotificationItem.defaultProps = {
+	type: "default",
+};
+
+export default NotificationItem;

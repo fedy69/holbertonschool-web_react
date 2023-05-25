@@ -1,129 +1,157 @@
-import React from 'react';
-import Notifications from '../Notifications/Notifications.js';
-import Header from '../Header/Header.js';
-import Login from '../Login/Login';
-import Footer from '../Footer/Footer';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import Header from '../Header/Header.js';
+import Login from '../Login/Login.js';
+import Footer from '../Footer/Footer.js';
+import Notifications from '../Notifications/Notifications.js';
 import CourseList from '../CourseList/CourseList';
 import { getLatestNotification } from '../utils/utils';
-import BodySection from '../BodySection/BodySection';
-import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
+import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom.js';
+import BodySection from '../BodySection/BodySection.js';
+import WithLogging from '../HOC/WithLogging.js';
 import { StyleSheet, css } from 'aphrodite';
 
-const listCourses = [
-  { id: 1, name: 'ES6', credit: 60 },
-  { id: 2, name: 'Webpack', credit: 20 },
-  { id: 3, name: 'React', credit: 40 },
-];
-
-const listNotifications = [
-  { id: 1, type: 'default', value: 'New course available' },
-  { id: 2, type: 'urgent', value: 'New resume available' },
-  { id: 3, type: 'urgent', html: { __html: getLatestNotification() } },
-];
-
-class App extends React.Component {
+class App extends Component {
   constructor(props) {
-    super();
-    this.state = {
-      isLoggedIn: props.isLoggedIn || false,
-    };
-    this.logOut = props.logOut;
+    super(props);
+    this.ctrlHEventHandler = this.ctrlHEventHandler.bind(this);
   }
 
-  KeyDownHandler(event) {
-    if (event.ctrlKey && event.key == 'h') {
-      event.preventDefault();
+  ctrlHEventHandler(e) {
+    let k = e.key;
+    if ((e.metaKey || e.ctrlKey) && k === 'h') {
+      e.preventDefault();
       alert('Logging you out');
-      this.logOut();
+      this.props.logOut();
     }
-  }
+  };
+
+  handleKeyPressDown() {
+    document.addEventListener("keydown", this.ctrlHEventHandler, false);
+  };
 
   componentDidMount() {
-    document.addEventListener('keydown', this.KeyDownHandler);
-  }
+    this.handleKeyPressDown();
+  };
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.KeyDownHandler);
-  }
+    document.removeEventListener("keydown", this.ctrlHEventHandler, false);
+  };
 
   render() {
-    if (!this.state.isLoggedIn) {
-      return (
-        <React.Fragment>
-          <Notifications listNotifications={listNotifications} />
-          <div className={css(styles.headerStyle)}>
+
+    let {
+      isLoggedIn,
+    } = this.props;
+
+    let i = 0;
+    
+    let listNotifications = [
+      {
+        id: i++,
+        type: "default",
+        value: "New course available",
+      },
+      {
+        id: i++,
+        type: "urgent",
+        value: "New resume available",
+      },
+      {
+        id: i++,
+        type: "urgent",
+        html: {__html: getLatestNotification()},
+      }
+    ];
+
+    let listCourses = [
+      {
+        id: 1,
+        name: "ES6",
+        credit: 60,
+      },
+      {
+        id: 2,
+        name: "Webpack",
+        credit: 20,
+      },
+      {
+        id: 3,
+        name: "React",
+        credit: 40,
+      },
+    ];
+
+    return (
+      <Fragment>
+        <div className={css(styles.app)}>
+          <div className={css(styles.upperside)}>
+            <Notifications listNotifications={listNotifications} />
             <Header />
           </div>
-          <div className={css(styles.bodyStyle)}>
-            <BodySectionWithMarginBottom title='Log in to continue'>
+          {
+            isLoggedIn === false &&
+            <BodySectionWithMarginBottom title="Log in to continue">
               <Login />
             </BodySectionWithMarginBottom>
-
-            <BodySection title='News from the School'>
-              <p>You can find all school News here !</p>
-            </BodySection>
-          </div>
-          <div className={css(styles.footerStyle)}>
-            <Footer />
-          </div>
-        </React.Fragment>
-      );
-    } else {
-      return (
-        <React.Fragment>
-          <Notifications />
-          <div className={css(styles.headerStyle)}>
-            <Header />
-          </div>
-          <div className={css(styles.bodyStyle)}>
-            <BodySectionWithMarginBottom title='Course list'>
+          }
+          {
+            isLoggedIn === true &&
+            <BodySectionWithMarginBottom title="Course list">
               <CourseList listCourses={listCourses} />
             </BodySectionWithMarginBottom>
-          </div>
-          <div className={css(styles.footerStyle)}>
-            <Footer />
-          </div>
-        </React.Fragment>
-      );
-    }
-  }
-}
+          }
+          <BodySection title="News from the school">
+            <p>
+              Ipsum anim sunt qui ullamco do consequat reprehenderit
+              aliqua fugiat proident amet duis.
+            </p>
+          </BodySection>
+          <Footer />
+        </div>
+      </Fragment>
+    );  
+  };
+};
 
 const styles = StyleSheet.create({
-  headerStyle: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    fontSize: '20px',
-    fontFamily: 'sans-serif',
-    color: '#e0454b',
+  app: {
+    position: 'relative',
+    minHeight: '100vh',
   },
-  bodyStyle: {
-    borderTop: 'solid',
-    borderBottom: 'solid',
-    borderColor: '#e0454b',
-    minHeight: '50vmax',
-    padding: '30px',
-  },
-
-  footerStyle: {
-    display: 'flex',
-    justifyContent: 'center',
-    fontStyle: 'italic',
-    fontFamily: 'sans-serif',
-  },
+  upperside: {
+    display: "flex",
+    flexDirection: "row-reverse",
+    width: "100%",
+    borderBottom: `3px solid var(--holberton-red)`,
+    justifyContent: "space-between",
+  }
 });
+
+// const globalStyles = StyleSheet.create({
+//   globals: {
+//     ':root': {
+//       '--holberton-red': '#e1484c',
+//     },
+//     'body': {
+//       maxWidth: '90%',
+//       margin: '0 auto',
+//     },
+//     'div': {
+//       padding: '2px 8px',
+//     },
+//   },
+// });
+
+// css(globalStyles.globals);
+
+App.propTypes = {
+  logOut: PropTypes.func,
+};
 
 App.defaultProps = {
   isLoggedIn: false,
-  logOut: () => {
-    return;
-  },
-};
-
-App.propTypes = {
-  isLoggedIn: PropTypes.bool,
-  logOut: PropTypes.func,
+  logOut: () => {},
 };
 
 export default App;

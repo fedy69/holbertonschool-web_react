@@ -1,13 +1,35 @@
+import React from 'react';
+import { expect } from 'chai';
+import Adapter from 'enzyme-adapter-react-16';
+import { shallow, configure } from 'enzyme';
 import Login from './Login';
-import { shallow } from 'enzyme';
+import { StyleSheetTestUtils, } from 'aphrodite';
 
-it('renders without crashing', () => {
-  shallow(<Login />);
+configure({adapter: new Adapter()});
+
+describe("Testing the <Login /> Component", () => {
+	
+	let wrapper;
+
+	beforeEach(() => {
+		wrapper = shallow(<Login shouldRender />);
+		StyleSheetTestUtils.suppressStyleInjection();
+	});
+
+	afterEach(() => {
+		StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+	});
+
+	it("<Login /> is rendered without crashing", () => {
+		expect(wrapper.render()).to.not.be.an('undefined');
+	});
+
+	it("<Login /> render 2 inputs", () => {
+		expect(wrapper.find('input')).to.have.lengthOf(2);
+	});
+
+	it("<Login /> render 2 labels", () => {
+		expect(wrapper.find('label')).to.have.lengthOf(2);
+	});
+
 });
-
-it('renders 2 inputs and 2 labels', () => {
-  const wrapper = shallow(<Header />);
-  expect(wrapper.find('input').length).toBe(2);
-  expect(wrapper.find('label').length).toBe(2);
-});
-
