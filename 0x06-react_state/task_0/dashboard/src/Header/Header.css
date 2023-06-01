@@ -1,22 +1,16 @@
-:root {
-    --main-color: #e01d3f;
+.header {
+  display: flex;
+  color: #e0344a;
+  align-items: center;
+  border-bottom: thick solid #e0344a;
+  width: 100%;
+  position: fixed;
 }
 
-.App-header {
-    border-bottom: 3px solid var(--main-color);
-    display: flex;
-    align-items: center;
-    height: 162px;
-    width: 100%;
+.header img {
+  width: 144px;
 }
 
-.App-header img {
-    height: 159px;
-    width: 159px;
-}
-
-.App-header h1 {
-    color: var(--main-color);
-    font-weight: 900;
-    font-size: 2rem;
+.header h1 {
+  margin: 0;
 }
