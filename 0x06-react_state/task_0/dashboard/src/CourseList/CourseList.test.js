@@ -1,8 +1,16 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import CourseList from './CourseList';
+import { StyleSheetTestUtils } from 'aphrodite';
 
 describe('<CourseList />', () => {
+  beforeAll(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+  afterAll(() => {
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  });
+
   const wrapper = shallow(<CourseList />);
   it('renders without crashing', () => {
     expect(wrapper.exists());
@@ -10,6 +18,7 @@ describe('<CourseList />', () => {
 
   it('renders rows', () => {
     const row = wrapper.find('CourseListRow');
+    expect(row.exists());
     expect(row.at(0).prop('textFirstCell')).toEqual('Available courses');
     expect(row.at(0).prop('isHeader')).toEqual(true);
     expect(row.at(1).prop('textFirstCell')).toEqual('Course name');
@@ -20,6 +29,12 @@ describe('<CourseList />', () => {
 });
 
 describe('listCourses with values', () => {
+  beforeAll(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+  afterAll(() => {
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  });
   let listCourses = undefined;
   beforeEach(() => {
     listCourses = [
@@ -32,6 +47,8 @@ describe('listCourses with values', () => {
   it('rows', () => {
     const wrapper = shallow(<CourseList listCourses={listCourses} />);
     const row = wrapper.find('CourseListRow');
+    expect(wrapper.exists());
+    expect(row.exists());
     expect(row).toHaveLength(5);
     expect(row.at(0).prop('textFirstCell')).toEqual('Available courses');
     expect(row.at(0).prop('isHeader')).toEqual(true);
@@ -51,6 +68,12 @@ describe('listCourses with values', () => {
 });
 
 describe('listCourses without values', () => {
+  beforeAll(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+  afterAll(() => {
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  });
   let listCourses = undefined;
   beforeEach(() => {
     listCourses = [];
@@ -58,8 +81,9 @@ describe('listCourses without values', () => {
 
   it('empty', () => {
     const wrapper = shallow(<CourseList listCourses={listCourses} />);
-    expect(wrapper.exists());
     const row = wrapper.find('CourseListRow');
+    expect(wrapper.exists());
+    expect(row.exists());
     expect(row).toHaveLength(3);
     expect(row.at(0).prop('textFirstCell')).toEqual('Available courses');
     expect(row.at(0).prop('isHeader')).toEqual(true);

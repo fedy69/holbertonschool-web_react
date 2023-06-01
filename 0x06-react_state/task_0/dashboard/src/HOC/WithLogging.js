@@ -1,6 +1,6 @@
 import React from 'react';
 
-const WithLogging = (WrappedComponent) => {
+function WithLogging(WrappedComponent) {
   const componentName =
     WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
@@ -8,7 +8,6 @@ const WithLogging = (WrappedComponent) => {
     componentDidMount() {
       console.log(`Component ${componentName} is mounted`);
     }
-
     componentWillUnmount() {
       console.log(`Component ${componentName} is going to unmount`);
     }
@@ -17,8 +16,10 @@ const WithLogging = (WrappedComponent) => {
       return <WrappedComponent {...this.props} />;
     }
   }
-  HOC.displayName = WithLogging(${ componentName });
+
+  HOC.displayName = `WithLogging(${componentName})`;
+
   return HOC;
-};
+}
 
 export default WithLogging;

@@ -4,48 +4,33 @@ import Login from '../Login/Login';
 import Footer from '../Footer/Footer';
 import Notifications from '../Notifications/Notifications';
 import CourseList from '../CourseList/CourseList';
-import PropTypes from 'prop-types';
 import BodySection from '../BodySection/BodySection';
 import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
+import PropTypes from 'prop-types';
 import { getLatestNotification } from '../utils/utils';
-
-const listCourses = [
-  { id: 1, name: 'ES6', credit: 60 },
-  { id: 2, name: 'Webpack', credit: 20 },
-  { id: 3, name: 'React', credit: 40 },
-];
-const listNotifications = [
-  { id: 1, type: 'default', value: 'New course available' },
-  { id: 2, type: 'urgent', value: 'New resume available' },
-  { id: 3, type: 'urgent', html: { __html: getLatestNotification() } },
-];
+import { StyleSheet, css } from 'aphrodite';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      displayDrawer: false
-    };
+    this.handleLogout = this.handleLogout.bind(this);
     this.handleDisplayDrawer = this.handleDisplayDrawer.bind(this);
     this.handleHideDrawer = this.handleHideDrawer.bind(this);
+    this.state = { displayDrawer: false };
   }
-
   componentDidMount() {
-    window.addEventListener('keydown', this.handleLogout.bind(this));
+    window.addEventListener('keydown', this.handleLogout);
   }
-
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleLogout.bind(this));
+    window.removeEventListener('keydown', this.handleLogout);
   }
-
-  handleLogout(event) {
-    if (event.key === 'Control' && event.key === 'h') {
-      event.preventDefault();
+  handleLogout(e) {
+    if (e.ctrlKey && e.key === 'h') {
+      e.preventDefault();
       alert('Logging you out');
       this.props.logOut();
     }
   }
-
   handleDisplayDrawer() {
     this.setState({ displayDrawer: true });
   }
@@ -53,17 +38,26 @@ class App extends Component {
   handleHideDrawer() {
     this.setState({ displayDrawer: false });
   }
-
   render() {
+    const listCourses = [
+      { id: 1, name: 'ES6', credit: 60 },
+      { id: 2, name: 'Webpack', credit: 20 },
+      { id: 3, name: 'React', credit: 40 },
+    ];
+    const listNotifications = [
+      { id: 1, type: 'default', value: 'New course available' },
+      { id: 2, type: 'urgent', value: 'New resume available' },
+      { id: 3, type: 'urgent', html: { __html: getLatestNotification() } },
+    ];
     const { isLoggedIn } = this.props;
     const { displayDrawer } = this.state;
     return (
       <Fragment>
         <Notifications
+          listNotifications={listNotifications}
           displayDrawer={displayDrawer}
           handleDisplayDrawer={this.handleDisplayDrawer}
           handleHideDrawer={this.handleHideDrawer}
-          listNotifications={listNotifications}
         />
         <Header />
         {isLoggedIn ? (
@@ -76,9 +70,16 @@ class App extends Component {
           </BodySectionWithMarginBottom>
         )}
         <BodySection title='News from the School'>
-          <p>Lorem ipsum dolor sit amet</p>
+          <p className={css(styles.p)}>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto,
+            ullam? Quisquam eos temporibus, voluptate error, sunt consectetur
+            ducimus eaque dolorum sit excepturi doloribus officiis reprehenderit
+            distinctio dignissimos adipisci a aspernatur.
+          </p>
         </BodySection>
-        <Footer />
+        <div className={css(styles.footer)}>
+          <Footer />
+        </div>
       </Fragment>
     );
   }
@@ -86,12 +87,26 @@ class App extends Component {
 
 App.defaultProps = {
   isLoggedIn: false,
-  logOut: () => { }
+  logOut: () => undefined,
 };
 
 App.propTypes = {
   isLoggedIn: PropTypes.bool,
-  logOut: PropTypes.func
+  logOut: PropTypes.func,
 };
+
+const styles = StyleSheet.create({
+  footer: {
+    width: '100%',
+    position: 'fixed',
+    bottom: 0,
+    textAlign: 'center',
+    fontStyle: 'italic',
+    borderTop: 'thick solid #e0344a',
+  },
+  p: {
+    marginTop: 0,
+  },
+});
 
 export default App;

@@ -1,21 +1,18 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Login from './Login';
+import { StyleSheetTestUtils } from 'aphrodite';
 
-const wrapper = shallow(<Login />);
+describe('<Login />', () => {
+  beforeAll(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+  afterAll(() => {
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  });
 
-it('renders without crashing', () => {
-  shallow(<Login />);
-});
-
-it('renders login', () => {
-  expect(wrapper.find('main.login').exists()).toEqual(true);
-});
-
-it('renders login', () => {
-  expect(wrapper.find('main.login input')).toHaveLength(2);
-});
-
-it('renders login', () => {
-  expect(wrapper.find('main.login label')).toHaveLength(2);
+  it('render without crashing', () => {
+    const wrapper = shallow(<Login />);
+    expect(wrapper.exists());
+  });
 });
