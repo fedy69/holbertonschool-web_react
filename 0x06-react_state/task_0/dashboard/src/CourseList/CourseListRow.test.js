@@ -1,39 +1,60 @@
 import React from 'react';
-import { expect } from 'chai';
-import Adapter from 'enzyme-adapter-react-16';
-import { shallow, configure } from 'enzyme';
+import { shallow } from 'enzyme';
 import CourseListRow from './CourseListRow';
+import { StyleSheetTestUtils } from 'aphrodite';
 
-configure({ adapter: new Adapter() });
+describe('<CourseListRow />', () => {
+  beforeAll(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+  afterAll(() => {
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  });
 
-describe("Testing the <CourseListRow /> Component", () => {
-    it("Test if it renders one cell with colSpan=2 when textSecondCell doesn't exist and isHeader is true", () => {
-        let props = {
-            isHeader: true,
-            textFirstCell: 'dumbstring',
-        };
-        let component = shallow(<CourseListRow {...props} />);
-        expect(component.contains(<tr><th colSpan={2}>{props.textFirstCell}</th></tr>)).to.equal(true);
-    });
+  it('renders without crashing', () => {
+    const wrapper = shallow(<CourseListRow textFirstCell='test' />);
+    expect(wrapper.exists());
+  });
 
-    it("Test if it renders 2 cells when textSecondCell exists and isHeader is true", () => {
-        let props = {
-            isHeader: true,
-            textFirstCell: 'dumbstring',
-            textSecondCell: 'dumbstring',
-        };
-        let component = shallow(<CourseListRow {...props} />);
-        expect(component.contains(<tr><th>{props.textFirstCell}</th><th>{props.textSecondCell}</th></tr>)).to.equal(true);
-    });
+  it('renders one cell', () => {
+    const wrapper = shallow(
+      <CourseListRow isHeader={true} textFirstCell='test' />
+    );
+    const th = wrapper.find('th');
+    expect(wrapper.exists());
+    expect(th.exists());
+    expect(th).toHaveLength(1);
+    expect(th.prop('colSpan')).toEqual('2');
+  });
 
-    it("Test if it renders 2 <td> within a <tr> element when isHeader is false", () => {
-        let props = {
-            isHeader: false,
-            textFirstCell: 'dumbstring',
-            textSecondCell: 'dumbstring',
-        };
-        let component = shallow(<CourseListRow {...props} />);
-        expect(component.contains(<tr><td>{props.textFirstCell}</td><td>{props.textSecondCell}</td></tr>)).to.equal(true);
-    });
+  it('renders two cells', () => {
+    const wrapper = shallow(
+      <CourseListRow
+        isHeader={true}
+        textFirstCell='test'
+        textSecondCell='second'
+      />
+    );
+    const th = wrapper.find('th');
+    expect(wrapper.exists());
+    expect(th.exists());
+    expect(th).toHaveLength(2);
+    expect(th.first().text()).toEqual('test');
+    expect(th.at(1).text()).toEqual('second');
+  });
 
+  it('renders two td', () => {
+    const wrapper = shallow(
+      <CourseListRow
+        isHeader={false}
+        textFirstCell='test'
+        textSecondCell='second'
+      />
+    );
+    const tr = wrapper.find('tr');
+    expect(wrapper.exists());
+    expect(tr.exists());
+    expect(tr).toHaveLength(1);
+    expect(tr.children('td')).toHaveLength(2);
+  });
 });
