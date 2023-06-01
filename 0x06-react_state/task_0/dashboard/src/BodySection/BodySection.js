@@ -1,52 +1,24 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { StyleSheet, css } from 'aphrodite';
+import React, { Component } from 'react';
+import { string } from 'prop-types';
 
-const styles = StyleSheet.create({
-    /* bodySectionWithMarginBottom */
-
-    bodySection: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '24px 0px 0px',
-        width: '90%',
-        maxWidth: '600px',
-        margin: '0 auto',
-    },
-    bodySectionWithMargin: {
-        marginBottom: '40px',
-    },
-
-    centeredWithMargin: {
-        margin: '12px auto',
-    }
-});
-
-class BodySection extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
+class BodySection extends Component {
     render() {
+        const { title, children } = this.props;
         return (
-            <div className={css(styles.bodySection)}>
-                <h2 className={css(styles.centeredWithMargin)}>{this.props.title}</h2>
-                {this.props.children}
+            <div className="bodySection">
+                <h2>{title}</h2>
+                {children}
             </div>
-        )
+        );
     }
 }
 
 BodySection.propTypes = {
-    title: PropTypes.string,
-    children: PropTypes.element,
-};
+    title: string,
+}
 
 BodySection.defaultProps = {
     title: '',
-    children: {},
-};
+}
 
 export default BodySection;
