@@ -1,0 +1,25 @@
+table {
+    width: 100%;
+  }
+  
+  thead tr:first-of-type th {
+    text-align: center;
+  }
+  
+  th,
+  td {
+    padding: 0.25rem;
+    border: 1px solid lightgray;
+  }
+  
+  th {
+    text-align: left;
+  }
+
+  .Notification {
+    padding-top: 50px;
+    padding-bottom: 165px;
+    border: none;
+    border-bottom: 3px solid;
+    border-color: #d73953;
+  }

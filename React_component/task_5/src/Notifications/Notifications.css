@@ -1,0 +1,24 @@
+.Notifications {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border: 1px solid rgba(212, 19, 109, 0.696);
+    border-radius: 4px;
+    padding: 2rem;
+}
+:root {
+    --color-blue: #0000ff;
+    --color-red: #ff0000;
+  }
+  
+  .Notifications {
+    border: 1px solid #E0434C;
+    padding: 2rem;
+  }
+  ul li[data-priority='default'] {
+    color: var(--color-blue);
+  }
+  
+  ul li[data-priority='urgent'] {
+    color: var(--color-red);
+  }
