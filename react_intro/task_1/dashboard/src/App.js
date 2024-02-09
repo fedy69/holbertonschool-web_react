@@ -1,22 +1,23 @@
-import logo from './Holberton_Logo.jpg';
 import './App.css';
-import React from 'react';
+import {getFooterCopy, getFullYear} from './utils';
 
 function App() {
+  const date = getFullYear();
+  const footer = getFooterCopy(true);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <div className='App'>
+      <header className='App-header'>
+        <img src="./holberton_logo.jpg" className='App-logo' alt='logo' />
         <h1>School dashboard</h1>
       </header>
-    {/*body*/}
-    <div className="App-body">
-      <p>Login to access the ful dashboard</p>
+      <body className='App-body'>
+        <p>Login to access the full dashboard</p>
+        </body>
+      <footer className='App-footer'>
+        <p>Copyright {date} - {footer}</p>
+    </footer>
     </div>
-    {/* Footer */}
-    <div className='App-footer'></div>
-    <p>Copyright {getFullYear()} - {getFooterCopy(true)}</p>
-  </div>
   );
 }
 
