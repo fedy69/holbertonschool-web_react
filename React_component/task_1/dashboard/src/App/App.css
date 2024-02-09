@@ -1,0 +1,7 @@
+.upperside {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100%;
+    border-bottom: 3px solid red;
+    justify-content: space-between;
+}
